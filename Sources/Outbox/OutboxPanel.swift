@@ -107,12 +107,27 @@ final class RoundedEffectView: NSVisualEffectView {
         material = .popover
         blendingMode = .behindWindow
         state = .active
+        // The layer mask alone leaves the blur and the window shadow square; maskImage rounds both
+        maskImage = Self.roundedMask(radius: Self.cornerRadius)
         wantsLayer = true
-        layer?.cornerRadius = 14
-        layer?.cornerCurve = .continuous
+        layer?.cornerRadius = Self.cornerRadius
         layer?.masksToBounds = true
         layer?.borderWidth = 1
         updateBorderColor()
+    }
+
+    private static let cornerRadius: CGFloat = 14
+
+    private static func roundedMask(radius: CGFloat) -> NSImage {
+        let edge = radius * 2 + 1
+        let image = NSImage(size: NSSize(width: edge, height: edge), flipped: false) { rect in
+            NSColor.black.setFill()
+            NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius).fill()
+            return true
+        }
+        image.capInsets = NSEdgeInsets(top: radius, left: radius, bottom: radius, right: radius)
+        image.resizingMode = .stretch
+        return image
     }
 
     required init?(coder: NSCoder) {
