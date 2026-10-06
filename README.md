@@ -62,7 +62,11 @@ xattr -dr com.apple.quarantine /Applications/Outbox.app
 
 The first time you press ⌘⏎, macOS asks for Accessibility permission so Outbox can send ⌘V to the previous app. Grant it under **System Settings → Privacy & Security → Accessibility**. Without it, the text is still on the clipboard; you just paste yourself. Paste-back can be turned off from the menu-bar icon.
 
-After updating to a new version, paste-back may stop working: the app is signed ad hoc, so macOS can treat the new build as a different app. Remove Outbox from the Accessibility list and add it again.
+After updating to a new version, paste-back may stop working even though the Accessibility switch still shows on: the app is signed ad hoc, so macOS treats the new build as a different app. Reset the entry, restart Outbox, and grant the permission again when it asks:
+
+```sh
+tccutil reset Accessibility tokyo.initie.outbox
+```
 
 ## Configuration
 
