@@ -2,17 +2,26 @@
 
 **A scratchpad that disappears when you copy.**
 
-Outbox is a tiny menu-bar app for macOS. Press a hotkey, write the long Slack message or AI-chat prompt you did not want to type into a cramped input box, press **⌘⏎**, and the text is on your clipboard, pasted back into the app you came from, and the panel is gone.
+Outbox is a tiny menu-bar app for macOS. Press **⌃⌥Space**, write the long Slack message or AI prompt you did not want to type into a cramped input box, and press **⌘⏎**. The text is on your clipboard and pasted into the app you came from, and the panel is gone.
 
-That is the whole idea: a buffer that sits in front of the clipboard. Write → copy → gone.
+![Outbox demo: a message is written in the floating panel, ⌘⏎ is pressed, and the text lands in the chat box underneath](docs/demo.gif)
 
-![Outbox panel](docs/screenshot.png)
+[Download the latest release](https://github.com/makiren/outbox/releases/latest) · macOS 13 or later · Apple Silicon and Intel · MIT · [日本語](#日本語)
 
 ## Why
 
-Chat inputs are a bad place to write anything longer than two lines. Enter sends by accident, the box is small, and a reload eats your draft. Notes apps solve the writing part but then you have to select, copy, switch, paste, and go back to delete the note.
+Chat inputs are a bad place to write anything longer than two lines. Enter sends by accident, the box is small, and a reload eats your draft. Notes apps solve the writing part, but then you have to select, copy, switch, paste, and go back to delete the note.
 
-Outbox collapses that into one keystroke each way.
+Outbox is a buffer that sits in front of the clipboard, and it collapses all of that into one keystroke each way. Write, copy, gone.
+
+## Where it helps
+
+- **Team chat.** Slack, Teams, Discord: anywhere Enter means "send". In Outbox, Enter is only a new line.
+- **AI prompts.** In a chat window or in a terminal, where Enter submits too: write the multi-paragraph prompt with its context first, then hand it over in one paste.
+- **Forms that forget.** Comment boxes and web forms lose text on reload. The Outbox draft is saved to disk as you type.
+- **Plain text.** Outbox holds plain text only, so whatever you paste through it comes out without formatting.
+
+![Outbox demo with a CLI agent: a prompt is written in the panel, hidden with Esc, reopened, finished, and pasted into the terminal with ⌘⏎](docs/demo-cli.gif)
 
 ## How it works
 
@@ -20,6 +29,7 @@ Outbox collapses that into one keystroke each way.
 - **⌘C** or **⌘X** with *nothing selected* copies or cuts the *whole* text and closes the panel. With a selection they behave normally. **⌘⏎** and **⇧⌘⏎** do the same regardless of selection.
 - On close, focus goes back to the app you came from, and Outbox sends **⌘V** there (optional, needs Accessibility permission).
 - **Esc** hides the panel and keeps the draft. The draft is saved to disk as you type, so it survives restarts.
+- The panel can be moved and resized, and it reopens where you left it. It shows up on whichever Space you are on, including over full-screen apps.
 
 | Action | Shortcut |
 | --- | --- |
@@ -51,6 +61,8 @@ xattr -dr com.apple.quarantine /Applications/Outbox.app
 ### Paste-back needs Accessibility
 
 The first time you press ⌘⏎, macOS asks for Accessibility permission so Outbox can send ⌘V to the previous app. Grant it under **System Settings → Privacy & Security → Accessibility**. Without it, the text is still on the clipboard; you just paste yourself. Paste-back can be turned off from the menu-bar icon.
+
+After updating to a new version, paste-back may stop working: the app is signed ad hoc, so macOS can treat the new build as a different app. Remove Outbox from the Accessibility list and add it again.
 
 ## Configuration
 
@@ -103,13 +115,16 @@ Outbox is not a notes app. One draft, no list, no sync, no formatting toolbar. I
 
 ## 日本語
 
-Slack や AI チャットに長文を送る前に、いったん書いておくための常駐パッドです。
+Outboxは、SlackやAIチャットに送る長文を先に書いておくための、macOSのメニューバー常駐アプリです。書き終えてコピーすると、パネルは消えます。
 
-- **⌃⌥Space** でパネルを開く
-- 書いて **⌘⏎**（または選択なしで ⌘C / ⌘X）→ 全文がクリップボードに入り、直前のアプリに貼り付けられ、パネルが消える
-- **Esc** で下書きを残したまま閉じる。下書きは自動保存
+- **⌃⌥Space**でパネルを開く
+- 書いて **⌘⏎** を押すと、全文がクリップボードに入り、直前のアプリに貼り付けられ、パネルが閉じる。何も選択せずに⌘Cまたは⌘Xを押しても同じ
+- パネルの中ではEnterは改行。書いている途中で送信されることはない
+- **Esc**を押すと、下書きを残したままパネルが隠れる。下書きは自動で保存される
 
-初回起動時に「開発元を確認できない」と出たら、**システム設定 → プライバシーとセキュリティ** の「このまま開く」を押すか、`xattr -dr com.apple.quarantine /Applications/Outbox.app` を実行してください。貼り戻しにはアクセシビリティの許可が必要です。ホットキーやフォントの変更は上の Configuration を参照。
+初回起動時に「開発元を確認できない」と表示されたら、**システム設定 → プライバシーとセキュリティ**の「このまま開く」を押すか、`xattr -dr com.apple.quarantine /Applications/Outbox.app`を実行してください。元のアプリへの自動貼り付けには、アクセシビリティの許可が必要です。ホットキーとフォントの変え方は、上のConfigurationに書いてあります。
+
+日本語の紹介記事は[initieのブログ](https://www.initie.tokyo/blog/outbox/)にあります。
 
 ## License
 
